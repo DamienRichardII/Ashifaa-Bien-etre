@@ -12,29 +12,22 @@
      DONNÉES — faciles à modifier / à connecter à une API plus tard
      --------------------------------------------------------- */
 
-  // Prestations (image = visuel d'ambiance, en attendant les portraits définitifs)
+  // Prestations — tarifs volontairement non affichés : à renseigner (price: 55) quand la liste définitive sera validée
   const services = [
-    { id: 'initiale',  title: 'Consultation initiale',     price: 70, duration: '1h',     image: 'Assets/web/herbes.jpg' },
-    { id: 'suivi',     title: 'Suivi naturopathie',        price: 50, duration: '45 min', image: 'Assets/web/citron.jpg' },
-    { id: 'bienetre',  title: 'Accompagnement bien-être',  price: 60, duration: '1h',     image: 'Assets/web/fleurs.jpg' },
-    { id: 'express',   title: 'Consultation express',      price: 40, duration: '30 min', image: 'Assets/web/graines.jpg' }
+    { id: 'premiere',  title: 'Première consultation',               price: null, duration: '1h à 1h30',  image: 'Assets/web/herbes.jpg' },
+    { id: 'suivi',     title: 'Consultation de suivi',               price: null, duration: '45 min environ', image: 'Assets/web/eau-citron.jpg' },
+    { id: 'programme', title: 'Programme alimentaire & hygiène de vie', price: null, duration: 'Document personnalisé', image: 'Assets/web/graines-cuilleres.jpg' },
+    { id: 'suivi3',    title: 'Accompagnement 3 mois',               price: null, duration: '3 mois',     image: 'Assets/web/roses-blanches.jpg' },
+    { id: 'suivi6',    title: 'Accompagnement 6 mois',               price: null, duration: '6 mois',     image: 'Assets/web/figues.jpg' }
   ];
   const timeSlots = ['09:00', '10:30', '12:00', '14:00', '15:30', '17:00'];
 
   // E-books : structure prête pour une future boutique (prix, fiche, paiement, téléchargement)
   const ebooks = [
-    { id: 'equilibre-naturel', title: 'Mon équilibre au naturel', subtitle: 'Conseils, recettes et rituels',
+    { id: 'equilibre-naturel', title: 'Mon équilibre au naturel', subtitle: 'Conseils et recettes',
       price: null, image: null, description: '', url: null, downloadUrl: null },
     { id: 'cycle-feminin', title: 'Cycle féminin & bien-être', subtitle: '',
       price: null, image: null, description: '', url: null, downloadUrl: null }
-  ];
-
-  // Témoignages — À REMPLACER par de vrais retours clientes avant mise en ligne
-  const testimonials = [
-    { quote: 'Un accompagnement bienveillant et précieux. J’ai retrouvé une vraie sérénité dans mon quotidien.', name: 'Sarah', stars: 5 },
-    { quote: 'Des conseils simples, naturels et vraiment adaptés à mon rythme. Je me sens plus alignée.', name: 'Prénom', stars: 5 },
-    { quote: 'Une écoute attentive qui m’a aidée à mieux comprendre mon corps et mes émotions.', name: 'Prénom', stars: 5 },
-    { quote: 'Un moment pour soi, doux et rassurant. Je recommande sans hésiter.', name: 'Prénom', stars: 5 }
   ];
 
   /* ---------------------------------------------------------
@@ -57,25 +50,6 @@
     $$('a', nav).forEach(a => a.addEventListener('click', () => setMenu(false)));
     document.addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
     window.matchMedia('(min-width: 1025px)').addEventListener('change', e => { if (e.matches) setMenu(false); });
-
-    // Liens vers des pages non encore créées : pas de saut de page
-    $$('[data-soon]').forEach(a => a.addEventListener('click', e => e.preventDefault()));
-
-    // Lien actif selon la section visible
-    const links = $$('.nav__list a[href^="#"]:not([data-soon])');
-    const map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
-    const sections = ['accueil', 'accompagnements', 'ebooks', 'contact'].map(id => document.getElementById(id)).filter(Boolean);
-    if ('IntersectionObserver' in window) {
-      const io = new IntersectionObserver(entries => {
-        entries.forEach(en => {
-          if (!en.isIntersecting) return;
-          links.forEach(l => { l.classList.remove('is-active'); l.removeAttribute('aria-current'); });
-          const a = map.get(en.target.id);
-          if (a) { a.classList.add('is-active'); a.setAttribute('aria-current', 'page'); }
-        });
-      }, { rootMargin: '-45% 0px -50% 0px' });
-      sections.forEach(s => io.observe(s));
-    }
   }
 
   /* ---------------------------------------------------------
@@ -136,7 +110,7 @@
       <button type="button" class="service" role="radio" aria-checked="false" data-id="${s.id}">
         <img src="${s.image}" alt="" loading="lazy" width="54" height="54">
         <span class="service__info"><strong>${s.title}</strong><span>${s.duration}</span></span>
-        <span class="service__price">${s.price} €</span>
+        ${s.price ? `<span class="service__price">${s.price} €</span>` : ''}
       </button>`).join('');
     svcBox.addEventListener('click', e => {
       const b = e.target.closest('.service'); if (!b) return;
@@ -187,7 +161,7 @@
     /* Récapitulatif / étapes / bouton */
     const summary = () => {
       const d = state.date ? new Date(state.date + 'T00:00:00') : null;
-      return `${state.service.title} (${state.service.duration}, ${state.service.price} €) — ${fmtDate(d)} à ${state.time}`;
+      return `${state.service.title} (${state.service.duration}) — ${fmtDate(d)} à ${state.time}`;
     };
     function refresh() {
       const ready = state.service && state.date && state.time;
@@ -258,51 +232,11 @@
   }
 
   /* ---------------------------------------------------------
-     TÉMOIGNAGES (slider)
-     --------------------------------------------------------- */
-  function initTestimonials() {
-    const track = $('#tTrack'), dotsBox = $('#tDots'); if (!track) return;
-    const star = '<svg class="ico"><use href="#i-star"/></svg>';
-    track.innerHTML = testimonials.map((t, i) => `
-      <figure class="testi__slide" role="group" aria-roledescription="diapositive" aria-label="${i + 1} sur ${testimonials.length}" style="margin:0">
-        <q>${t.quote}</q>
-        <div class="stars" role="img" aria-label="${t.stars} étoiles sur 5">${star.repeat(t.stars)}</div>
-        <figcaption class="testi__name">${t.name}</figcaption>
-      </figure>`).join('');
-    dotsBox.innerHTML = testimonials.map((_, i) => `<button type="button" role="tab" aria-label="Témoignage ${i + 1}" aria-selected="false"></button>`).join('');
-    const dots = $$('button', dotsBox), slides = $$('.testi__slide', track);
-    let i = 0, timer = null;
-
-    const go = n => {
-      i = (n + testimonials.length) % testimonials.length;
-      track.style.transform = `translateX(-${i * 100}%)`;
-      dots.forEach((d, k) => d.setAttribute('aria-selected', String(k === i)));
-      slides.forEach((s, k) => s.setAttribute('aria-hidden', String(k !== i)));
-    };
-    const stop = () => { clearInterval(timer); timer = null; };
-    const start = () => { if (reduceMotion || timer) return; timer = setInterval(() => go(i + 1), 7000); };
-
-    $('#tPrev').addEventListener('click', () => { go(i - 1); stop(); });
-    $('#tNext').addEventListener('click', () => { go(i + 1); stop(); });
-    dots.forEach((d, k) => d.addEventListener('click', () => { go(k); stop(); }));
-    const wrap = $('.testi');
-    wrap.addEventListener('mouseenter', stop); wrap.addEventListener('mouseleave', start);
-    wrap.addEventListener('focusin', stop);
-    wrap.addEventListener('keydown', e => { if (e.key === 'ArrowLeft') { go(i - 1); stop(); } if (e.key === 'ArrowRight') { go(i + 1); stop(); } });
-    // Swipe tactile
-    let x0 = null;
-    track.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; stop(); }, { passive: true });
-    track.addEventListener('touchend', e => { if (x0 === null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 40) go(i + (dx < 0 ? 1 : -1)); x0 = null; });
-    go(0); start();
-  }
-
-  /* ---------------------------------------------------------
      INIT
      --------------------------------------------------------- */
   document.addEventListener('DOMContentLoaded', () => {
     initHeader();
     initEbooks();
-    initTestimonials();
     initBooking();
     initReveal();
     initParallax();

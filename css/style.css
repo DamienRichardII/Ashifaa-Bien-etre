@@ -397,3 +397,77 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .js .reveal { opacity: 1; transform: none; }
   .hero__img { transform: scale(1.04) !important; }
 }
+
+/* ==========================================================
+   AJOUTS — accueil enrichi + pages intérieures
+   ========================================================== */
+.center { text-align: center; }
+.intro { padding-top: 56px; padding-bottom: 8px; }
+.intro__text { max-width: 46em; margin-inline: auto; text-align: center; font-family: var(--serif); font-size: clamp(1.25rem, 2vw, 1.6rem); line-height: 1.5; color: var(--ink-2); }
+.approach { padding: 56px 0 8px; }
+.approach__inner { text-align: center; }
+.approach .section-title { justify-content: center; text-transform: none; letter-spacing: 0; font-family: var(--serif); font-weight: 500; font-size: clamp(1.8rem, 3vw, 2.5rem); }
+.approach .section-title::after { display: none; }
+.approach .lead { max-width: 44em; margin-inline: auto; color: var(--ink-2); }
+.chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.chips li { padding: 9px 20px; background: var(--paper); border: 1px solid var(--line); border-radius: 999px; font-size: 14px; font-weight: 400; }
+
+.intention .section-title { text-transform: none; letter-spacing: 0; font-family: var(--serif); font-weight: 500; font-size: clamp(1.5rem, 2.4vw, 2rem); }
+.intention .section-title::after { display: none; }
+.intention__list { display: grid; gap: 18px; }
+.intention__list h3 { font-family: var(--serif); font-weight: 500; font-size: 1.3rem; margin-bottom: 4px; }
+.intention__list p { color: var(--ink-2); font-size: 15px; }
+
+.journal-teaser { padding-top: 24px; padding-bottom: 56px; }
+.jcards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-bottom: 26px; }
+.jcard { display: block; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 26px 22px; transition: transform .45s var(--ease), border-color .45s var(--ease), box-shadow .45s var(--ease); }
+.jcard:hover { transform: translateY(-4px); border-color: var(--leaf); box-shadow: 0 16px 34px -24px rgba(36, 58, 44, .5); }
+.jcard__emoji { font-size: 1.7rem; display: block; margin-bottom: 10px; }
+.jcard h3 { font-family: var(--serif); font-weight: 500; font-size: 1.4rem; line-height: 1.2; }
+
+/* ---------- Pages intérieures ---------- */
+.page-hero { position: relative; isolation: isolate; text-align: center; padding: calc(var(--header-h) + 64px) var(--gut) 56px; overflow: hidden; background: var(--beige); }
+.page-hero__bg { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+.page-hero::after { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(248,246,241,.55), rgba(248,246,241,.9)); }
+.page-hero h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(2.2rem, 4.4vw, 3.6rem); line-height: 1.1; max-width: 18em; margin-inline: auto; }
+.page-hero p { max-width: 38em; margin: 16px auto 0; color: var(--ink-2); font-size: 17px; }
+.page { padding-block: 56px 72px; }
+.page--narrow { max-width: 860px; }
+.prose p { font-size: 17px; line-height: 1.75; color: var(--ink-2); margin-bottom: 18px; }
+.split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 64px); align-items: center; }
+.split img { border-radius: 14px; width: 100%; height: 100%; max-height: 520px; object-fit: cover; }
+.note { background: var(--beige); border-radius: 12px; padding: 22px 24px; font-size: 15px; color: var(--ink-2); margin-top: 28px; }
+.note h2 { font-family: var(--serif); font-weight: 500; font-size: 1.5rem; color: var(--ink); margin-bottom: 8px; }
+.disclaimer { font-size: 13px; color: var(--muted); text-align: center; max-width: 50em; margin: 36px auto 0; }
+
+.offers { display: grid; gap: 20px; }
+.offer { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 28px clamp(20px, 3vw, 36px); }
+.offer__head { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 8px; }
+.offer h2 { font-family: var(--serif); font-weight: 500; font-size: 1.8rem; line-height: 1.15; }
+.offer__tag { font-size: 12.5px; padding: 4px 14px; background: var(--beige); border-radius: 999px; color: var(--ink-2); white-space: nowrap; }
+.offer__intro { color: var(--ink-2); margin-bottom: 14px; }
+.offer ul { margin: 0 0 16px; padding-left: 1.1em; list-style: disc; color: var(--ink-2); font-size: 15px; }
+.offer ul li { margin-bottom: 4px; }
+.offer em { display: block; font-size: 14px; color: var(--muted); margin-bottom: 18px; }
+
+.articles { display: grid; gap: 20px; }
+.article { background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 30px clamp(20px, 3vw, 36px); scroll-margin-top: 90px; }
+.article__emoji { font-size: 1.8rem; display: block; margin-bottom: 8px; }
+.article h2 { font-family: var(--serif); font-weight: 500; font-size: clamp(1.5rem, 2.4vw, 1.9rem); line-height: 1.2; margin-bottom: 10px; }
+.article p { color: var(--ink-2); font-size: 16px; line-height: 1.7; }
+.article img { border-radius: 12px; margin-top: 18px; width: 100%; max-height: 320px; object-fit: cover; }
+.gestes { background: var(--beige); border-radius: 18px; padding: 30px clamp(20px, 3vw, 36px); margin-top: 28px; }
+.gestes h2 { font-family: var(--serif); font-weight: 500; font-size: 1.8rem; margin-bottom: 14px; }
+.gestes p { color: var(--ink-2); padding: 14px 0; border-top: 1px solid var(--line-2); }
+
+.contact-grid { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: clamp(28px, 5vw, 64px); }
+.contact-list { display: grid; gap: 14px; margin: 22px 0; }
+.contact-list a { text-decoration: underline; text-underline-offset: 3px; }
+.contact-form { display: grid; gap: 14px; background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 24px; }
+.cta-band { text-align: center; padding: 56px var(--gut); background: var(--beige); }
+.cta-band p { font-family: var(--serif); font-size: clamp(1.4rem, 2.4vw, 2rem); margin-bottom: 20px; }
+.soon { text-align: center; padding: 40px 0; color: var(--ink-2); }
+
+@media (max-width: 860px) {
+  .jcards, .split, .contact-grid { grid-template-columns: minmax(0, 1fr); }
+}
